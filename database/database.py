@@ -96,6 +96,12 @@ class Database:
             )
         ''')
 
+        await self.connection.execute('''
+            CREATE INDEX IF NOT EXISTS idx_oi_symbol_exchange_timestamp
+            ON open_interest_history(symbol, exchange, timestamp DESC
+            )
+        ''')
+
         await self.connection.commit()
         logger.info("Database initialized successfully")
 
