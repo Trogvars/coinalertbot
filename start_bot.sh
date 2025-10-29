@@ -11,4 +11,5 @@ source venv/bin/activate
 #python test_coinglass.py
 #python check_oi_changes.py
 #python show_current_oi.py
-python test_project.py
+#python test_project.py
+pip install openai nest-asyncio
