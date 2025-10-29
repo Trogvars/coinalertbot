@@ -29,7 +29,7 @@ cursor.execute('''
     FROM ranked_oi
     WHERE rn = 1 AND prev_oi IS NOT NULL
     ORDER BY ABS((open_interest - prev_oi) / prev_oi * 100) DESC
-    LIMIT 20
+    LIMIT 80
 ''')
 
 results = cursor.fetchall()

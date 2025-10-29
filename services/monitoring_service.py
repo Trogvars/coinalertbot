@@ -33,11 +33,18 @@ class MonitoringService:
         """
         alerts = []
 
-        # Настройки таймфреймов
+        # Настройки таймфреймов с конкретными порогами
+        # 1min: 5-8% - большие ликвидации
+        # 5min: 2% - быстрые движения
+        # 15min: 3% - краткосрочные тренды
+        # 30min: 4-5% - среднесрочные тренды
+        # 60min: 6-8% - большие тренды
         timeframes = [
-            ('15min', 15, settings.get('oi_threshold_15min', 2.0)),
-            ('30min', 30, settings.get('oi_threshold_30min', 3.0)),
-            ('1hour', 60, settings.get('oi_threshold_1hour', 5.0)),
+            ('1min', 1, settings.get('oi_threshold_1min', 5.0)),
+            ('5min', 5, settings.get('oi_threshold_5min', 2.0)),
+            ('15min', 15, settings.get('oi_threshold_15min', 3.0)),
+            ('30min', 30, settings.get('oi_threshold_30min', 4.0)),
+            ('60min', 60, settings.get('oi_threshold_60min', 6.0)),
         ]
 
         async with BinanceAPI() as binance:
@@ -323,9 +330,11 @@ class MonitoringService:
             timeframe = alert_data.get('timeframe', 'unknown')
 
             timeframe_names = {
+                '1min': '1 минута',
+                '5min': '5 минут',
                 '15min': '15 минут',
                 '30min': '30 минут',
-                '1hour': '1 час'
+                '60min': '1 час'
             }
             timeframe_text = timeframe_names.get(timeframe, timeframe)
 
