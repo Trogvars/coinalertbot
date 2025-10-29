@@ -1,0 +1,36 @@
+# Telegram Bot Framework
+aiogram==3.13.1
+
+# HTTP клиент для асинхронных запросов
+aiohttp==3.10.5
+
+# Асинхронная работа с SQLite
+aiosqlite==0.20.0
+
+# Загрузка переменных окружения
+python-dotenv==1.0.1
+
+# HTTP запросы (для синхронных операций если нужно)
+requests==2.32.3
+
+# Криптовалютные биржи (опционально, но может быть полезно)
+ccxt==4.4.10
+
+# Дополнительные зависимости для стабильности
+certifi==2024.8.30
+charset-normalizer==3.3.2
+idna==3.10
+multidict==6.1.0
+yarl==1.15.2
+frozenlist==1.4.1
+aiosignal==1.3.1
+attrs==24.2.0
+magic-filter==1.0.12
+
+# Для работы с датами и временем
+python-dateutil==2.9.0
+pytz==2024.2
+
+websockets==12.0
+
+aiohttp
