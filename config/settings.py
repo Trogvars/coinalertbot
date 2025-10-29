@@ -43,11 +43,39 @@ class Config:
     BYBIT_REQUESTS_PER_MINUTE: int = 100
     
     def validate(self) -> bool:
-        """Валидация конфигурации"""
+        """Валидация конфигурации с проверками безопасности"""
+        # Проверка обязательных полей
         if not self.BOT_TOKEN:
             raise ValueError("BOT_TOKEN is required")
         if not self.COINMARKETCAP_API_KEY:
             raise ValueError("COINMARKETCAP_API_KEY is required")
+        
+        # Проверка длины токенов (минимальная безопасность)
+        if len(self.BOT_TOKEN.strip()) < 20:
+            raise ValueError("BOT_TOKEN appears to be invalid (too short)")
+        if len(self.COINMARKETCAP_API_KEY.strip()) < 20:
+            raise ValueError("COINMARKETCAP_API_KEY appears to be invalid (too short)")
+        
+        # Проверка числовых значений
+        if self.UPDATE_INTERVAL < 60:
+            raise ValueError("UPDATE_INTERVAL must be at least 60 seconds")
+        if self.UPDATE_INTERVAL > 3600:
+            raise ValueError("UPDATE_INTERVAL should not exceed 3600 seconds (1 hour)")
+        
+        if self.MAX_ALERTS_PER_USER < 1 or self.MAX_ALERTS_PER_USER > 1000:
+            raise ValueError("MAX_ALERTS_PER_USER must be between 1 and 1000")
+        
+        if self.CACHE_TTL < 60 or self.CACHE_TTL > 86400:
+            raise ValueError("CACHE_TTL must be between 60 and 86400 seconds")
+        
+        # Проверка URL
+        if not self.BINANCE_BASE_URL.startswith('https://'):
+            raise ValueError("BINANCE_BASE_URL must use HTTPS")
+        if not self.BYBIT_BASE_URL.startswith('https://'):
+            raise ValueError("BYBIT_BASE_URL must use HTTPS")
+        if not self.COINMARKETCAP_BASE_URL.startswith('https://'):
+            raise ValueError("COINMARKETCAP_BASE_URL must use HTTPS")
+        
         return True
 
 

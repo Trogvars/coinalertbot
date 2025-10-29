@@ -143,7 +143,7 @@ async def set_oi_threshold(callback: CallbackQuery, state: FSMContext):
     """Установка порога OI"""
     await callback.message.answer(
         "📈 Введите порог изменения Open Interest в %\n"
-        "Например: 15 (для алертов при изменении >15%)\n\n"
+        "Например: 15 (для алертов при изменении &gt;15%)\n\n"
         "Рекомендуется: 5-20%",
         reply_markup=get_back_button()
     )
@@ -302,7 +302,7 @@ async def process_interval(message: Message, state: FSMContext, db: Database):
         await state.clear()
         
     except ValueError:
-        await message.answer("❌ Введите число >= 60")
+        await message.answer("❌ Введите число &gt;= 60")
 
 
 @router.callback_query(F.data == 'set_max_coins')

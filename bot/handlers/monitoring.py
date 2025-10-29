@@ -181,7 +181,7 @@ async def cmd_liquidations(message: Message, db: Database):
         
         if total_liquidations == 0:
             liq_text += "✅ Нет крупных ликвидаций за последние 5 минут\n\n"
-            liq_text += "<i>Проверяются только крупные позиции (>$10k)</i>"
+            liq_text += "<i>Проверяются только крупные позиции (&gt;$10k)</i>"
         
         await message.answer(liq_text, parse_mode='HTML')
         

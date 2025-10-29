@@ -210,13 +210,81 @@ async def callback_mode_menu(callback: CallbackQuery, db: Database):
         "• Задержка до 5 минут\n\n"
         "<b>WebSocket:</b>\n"
         "• Обновления в реальном времени\n"
-        "• Задержка < 3 секунды ⚡\n"
+        "• Задержка &lt; 3 секунды ⚡\n"
         "• Мгновенные алерты\n\n"
         "Выберите режим:"
     )
 
     await callback.message.edit_text(mode_text, reply_markup=keyboard, parse_mode='HTML')
     await callback.answer()
+
+
+@router.callback_query(F.data == 'mode_api')
+async def callback_mode_api(callback: CallbackQuery, db: Database):
+    """Переключение на режим REST API"""
+    user_id = callback.from_user.id
+    user = await db.get_user(user_id)
+    
+    if not user:
+        await callback.answer("❌ Ошибка")
+        return
+    
+    # Проверяем, не тот ли уже режим
+    current_mode = user.settings.get('monitoring_mode', 'api')
+    if current_mode == 'api':
+        await callback.answer("ℹ️ Уже используется режим REST API")
+        return
+    
+    # Обновляем режим
+    user.settings['monitoring_mode'] = 'api'
+    await db.update_user_settings(user_id, user.settings)
+    
+    logger.info(f"User {user_id} switched to API mode")
+    
+    # Формируем сообщение с информацией
+    notification = "✅ Режим переключен на REST API\n\n"
+    if user.is_monitoring:
+        notification += "🔄 Мониторинг будет использовать REST API при следующей проверке"
+    
+    await callback.answer(notification, show_alert=True)
+    
+    # Обновляем меню
+    await callback_mode_menu(callback, db)
+
+
+@router.callback_query(F.data == 'mode_websocket')
+async def callback_mode_websocket(callback: CallbackQuery, db: Database):
+    """Переключение на режим WebSocket"""
+    user_id = callback.from_user.id
+    user = await db.get_user(user_id)
+    
+    if not user:
+        await callback.answer("❌ Ошибка")
+        return
+    
+    # Проверяем, не тот ли уже режим
+    current_mode = user.settings.get('monitoring_mode', 'api')
+    if current_mode == 'websocket':
+        await callback.answer("ℹ️ Уже используется режим WebSocket")
+        return
+    
+    # Обновляем режим
+    user.settings['monitoring_mode'] = 'websocket'
+    await db.update_user_settings(user_id, user.settings)
+    
+    logger.info(f"User {user_id} switched to WebSocket mode")
+    
+    # Формируем сообщение с информацией
+    notification = "✅ Режим переключен на WebSocket ⚡\n\n"
+    if user.is_monitoring:
+        notification += "🔄 WebSocket подключение будет установлено в течение минуты"
+    else:
+        notification += "💡 Запустите мониторинг для использования WebSocket"
+    
+    await callback.answer(notification, show_alert=True)
+    
+    # Обновляем меню
+    await callback_mode_menu(callback, db)
 
 
 @router.callback_query(F.data == 'help')
