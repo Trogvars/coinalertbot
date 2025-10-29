@@ -12,30 +12,30 @@
 
 ## 📦 Установка
 
-\`\`\`bash
-git clone https://github.com/Trogvars/coinalertbot.git
-cd coinalertbot
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-\`\`\`
+`bash`
+
+git clone https://github.com/Trogvars/coinalertbot.git   
+cd coinalertbot  
+python -m venv venv  
+source venv/bin/activate  
+pip install -r requirements.txt  
+
 
 ## ⚙️ Настройка
 
-Создайте `.env`:
-\`\`\`
-BOT_TOKEN=your_telegram_bot_token
-COINMARKETCAP_API_KEY=your_cmc_api_key
-UPDATE_INTERVAL=60
-\`\`\`
+Создайте `.env`:  
+BOT_TOKEN=your_telegram_bot_token  
+COINMARKETCAP_API_KEY=your_cmc_api_key  
+UPDATE_INTERVAL=60  
+
 
 ## 🚀 Запуск
 
-\`\`\`bash
+`bash`
 ./start_bot.sh
 # или
 python main.py
-\`\`\`
+
 
 ## 📖 Команды
 
